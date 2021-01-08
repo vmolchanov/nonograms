@@ -1,0 +1,17 @@
+.crossword__background {
+    fill: black;
+}
+
+.crossword__cell {
+    fill: white;
+}
+
+.crossword__text {
+    font-size: 48px;
+}
+
+.crossword__hint {
+    .crossword__cell {
+        fill: #C7C7C7;
+    }
+}
