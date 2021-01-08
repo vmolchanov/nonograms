@@ -28,7 +28,7 @@ class Crossword {
     }
 
     /**
-     * @param {Array<Boolean>} data - массив с рисунком, где 1 обозначает закрашенную клетку, а 0 пустую.
+     * @param {Array<Boolean>} image - массив с рисунком. Значения определены в перечислении ECell.
      */
     render(image) {
         const n = image.length;
@@ -138,7 +138,7 @@ class Crossword {
                 j < image[0].length;
                 j++, x += this.#CELL_WIDTH + (j % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT)
             ) {
-                group.appendChild(this.#renderCell(x, y));
+                group.appendChild(this.#renderCell(new Point(x, y)));
             }
             field.appendChild(group);
         }
@@ -156,7 +156,7 @@ class Crossword {
         return background;
     }
 
-    #renderCell(x, y) {
+    #renderCell({x, y}) {
         const cell = document.createElementNS(this.#SVG_NAMESPACE_URI, 'rect');
         cell.classList.add('crossword__cell');
         cell.setAttributeNS(null, 'x', x);
@@ -172,7 +172,7 @@ class Crossword {
         return group;
     }
 
-    #renderText(x, y, text) {
+    #renderText({x, y}, text) {
         const textNode = document.createElementNS(this.#SVG_NAMESPACE_URI, 'text');
         textNode.classList.add('crossword__text');
         textNode.setAttributeNS(null, 'x', x);
@@ -241,16 +241,15 @@ class Crossword {
         return hintsNode;
     }
 
-    #renderHintCell({x, y}, text = null) {
+    #renderHintCell(coord, text = null) {
         const wrapper = document.createElementNS(this.#SVG_NAMESPACE_URI, 'svg');
-        const cell = this.#renderCell(x, y);
+        const cell = this.#renderCell(coord);
         wrapper.appendChild(cell);
         if (text !== null) {
-            wrapper.appendChild(this.#renderText(
-                x + this.#CELL_WIDTH / 2,
-                y + this.#CELL_HEIGHT / 2,
-                text
-            ));
+            wrapper.appendChild(this.#renderText(new Point(
+                coord.x + this.#CELL_WIDTH / 2,
+                coord.y + this.#CELL_HEIGHT / 2,
+            ), text));
         }
         return wrapper;
     }
