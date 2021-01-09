@@ -1,9 +1,13 @@
+.crossword {
+    border: 2px solid var(--black);
+}
+
 .crossword__background {
-    fill: black;
+    fill: var(--black);
 }
 
 .crossword__cell {
-    fill: white;
+    fill: var(--white);
 }
 
 .crossword__text {
@@ -12,6 +16,6 @@
 
 .crossword__hint {
     .crossword__cell {
-        fill: #C7C7C7;
+        fill: var(--gray);
     }
 }

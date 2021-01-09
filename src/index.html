@@ -7,15 +7,32 @@
     <title>Японские кроссворды</title>
 </head>
 <body>
-    <header class="main-header">
-        <div class="timer"></div>
-        <div class="scores"></div>
-        <ul class="actions"></ul>
-    </header>
+    <h1 class="page-title">Японские кроссворды</h1>
 
-    <main class="field">
-        <svg viewBox="0 0 1017 1017" class="field__crossword crossword" width="500" height="500"></svg>
-    </main>
+    <ul class="catalog"></ul>
+
+    <template id="catalog-item">
+        <li class="catalog__item">
+            <div class="catalog__item-image">
+                <img src="{{source}}" width="220" height="140" alt="{{title}}">
+            </div>
+            <div class="catalog__item-info">
+                <p class="catalog__item-name">
+                    <a href="{{href}}">{{title}}</a>
+                </p>
+                <ul class="catalog__info-list">
+                    <li class="catalog__info-item">
+                        <span>{{key}}</span>
+                        <span>{{value}}</span>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="catalog__info-item">
+            <span>{{key}}</span>
+            <span>{{value}}</span>
+        </li>
+    </template>
 
     <script src="js/bundle.min.js"></script>
 </body>
