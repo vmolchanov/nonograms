@@ -10,6 +10,10 @@
     fill: var(--white);
 }
 
+.crossword__cell--black {
+    fill: var(--black);
+}
+
 .crossword__text {
     font-size: 48px;
 }

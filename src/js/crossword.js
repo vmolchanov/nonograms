@@ -16,7 +16,7 @@ class Crossword {
 
     #BIG_INDENT = 5;
 
-    #ECell = {
+    static ECell = {
         EMPTY: 0,
         BLACK: 1
     };
@@ -64,6 +64,16 @@ class Crossword {
         this.#container.appendChild(field);
     }
 
+    fill(x, y, color = Crossword.ECell.BLACK) {
+        const rows = this.#container.querySelectorAll('.crossword__field .crossword__row');
+        const cells = rows[y].querySelectorAll('.crossword__cell');
+
+        switch (color) {
+            case Crossword.ECell.BLACK:
+                cells[x].classList.add('crossword__cell--black');
+        }
+    }
+
     #setViewBox({width, height}, {x, y}) {
         this.#container.setAttribute('viewBox', `${width} ${height} ${x} ${y}`);
     }
@@ -84,10 +94,10 @@ class Crossword {
             let count = 0;
             hint.left.push([]);
             for (let j = 0; j < image[i].length; j++) {
-                if (image[i][j] === this.#ECell.EMPTY && count !== 0) {
+                if (image[i][j] === Crossword.ECell.EMPTY && count !== 0) {
                     hint.left[i].push(count);
                     count = 0;
-                } else if (image[i][j] === this.#ECell.BLACK) {
+                } else if (image[i][j] === Crossword.ECell.BLACK) {
                     count++;
                 }
             }
@@ -101,10 +111,10 @@ class Crossword {
             let count = 0;
             hint.top.push([]);
             for (let i = 0; i < image.length; i++) {
-                if (image[i][j] === this.#ECell.EMPTY && count !== 0) {
+                if (image[i][j] === Crossword.ECell.EMPTY && count !== 0) {
                     hint.top[j].push(count);
                     count = 0;
-                } else if (image[i][j] === this.#ECell.BLACK) {
+                } else if (image[i][j] === Crossword.ECell.BLACK) {
                     count++;
                 }
             }
