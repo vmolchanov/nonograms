@@ -1,0 +1,16 @@
+.actions {
+    @include row;
+    @include resetList;
+}
+
+.actions__item {
+    @include row;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.actions__label {
+    font-size: 12px;
+}

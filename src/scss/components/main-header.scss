@@ -1,0 +1,22 @@
+.main-header {
+    @include row;
+    @include eq-padding(1);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: var(--light-blue);
+
+    .main-menu {
+        @include column(11, 34);
+    }
+
+    .actions {
+        @include column(13, 34);
+        @include eq-padding(0.5, 34);
+    }
+}
+
+.main-header__game-control {
+    @include row;
+    @include column(10, 34);
+    @include eq-padding(0.5, 34);
+}

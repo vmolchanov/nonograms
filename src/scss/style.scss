@@ -1,6 +1,17 @@
 @import 'base';
 @import 'normalize';
+@import 'grid';
 
-@import 'components/crossword';
+@import 'components/actions';
+@import 'components/article';
 @import 'components/catalog';
+@import 'components/crossword-wrapper';
+@import 'components/crossword';
+@import 'components/main-content';
+@import 'components/main-header';
+@import 'components/main-menu';
 @import 'components/page-title';
+@import 'components/pentagon';
+@import 'components/score';
+@import 'components/timer';
+@import 'components/visually-hidden';

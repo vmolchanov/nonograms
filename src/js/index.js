@@ -4,14 +4,14 @@ import images from './images';
 import {runComponent} from './run-component';
 import {renderCatalogItem} from './templates/catalog-item';
 
-runComponent(document.querySelector('.crossword'), (element) => {
+runComponent(document.querySelector('.j-crossword'), (element) => {
     const crossword = new Crossword(element);
     const urlParams = new URLSearchParams(window.location.search);
     const id = Number(urlParams.get('id'));
     crossword.render(decodeImage(images.find((image) => image.id === id).image));
 });
 
-runComponent(document.querySelector('.catalog'), (element) => {
+runComponent(document.querySelector('.j-catalog'), (element) => {
     const fragment = document.createDocumentFragment();
     images.forEach((image) => {
         const catalogItem = renderCatalogItem({

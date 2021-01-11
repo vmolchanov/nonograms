@@ -1,11 +1,11 @@
 .catalog {
-    padding-left: 30px;
-    padding-right: 30px;
-    list-style: none;
+    @include resetList;
+    margin-top: 16px;
+    margin-bottom: 16px;
 }
 
 .catalog__item {
-    display: flex;
+    @include row;
     padding-top: 20px;
     padding-bottom: 20px;
     border-top: 1px solid var(--black);
@@ -16,15 +16,17 @@
 }
 
 .catalog__item-image {
-    flex-basis: 20%;
-    padding-left: 30px;
-    padding-right: 30px;
+    @include column(7, 18);
+    @include eq-padding(0.5, 18);
+
+    img {
+        width: 100%;
+    }
 }
 
 .catalog__item-info {
-    flex-basis: 80%;
-    padding-left: 30px;
-    padding-right: 30px;
+    @include column(11, 18);
+    @include eq-padding(1, 18);
 }
 
 .catalog__item-name {
@@ -45,14 +47,13 @@
 }
 
 .catalog__info-list {
-    padding-left: 0;
-    list-style: none;
+    @include resetList;
 }
 
 .catalog__info-item {
     span {
-        font-size: 14px;
         display: inline-block;
         width: 100px;
+        font-size: 14px;
     }
 }

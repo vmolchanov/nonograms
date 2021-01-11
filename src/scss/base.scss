@@ -2,10 +2,18 @@
     --black: black;
     --white: white;
     --gray: #C7C7C7;
+    --light-blue: #e1f6ff
 }
 
 *,
 *::before,
 *::after {
     box-sizing: border-box;
+}
+
+@mixin resetList() {
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style: none;
 }

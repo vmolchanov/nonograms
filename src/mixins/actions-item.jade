@@ -1,0 +1,11 @@
+mixin actions-item(id, value, text, isChecked=false)
+    li.actions__item
+        input(
+            id=id,
+            class="actions__button",
+            type="radio",
+            name="action",
+            value=value,
+            checked=isChecked
+        )
+        label(class="actions__label" for=id)= text
