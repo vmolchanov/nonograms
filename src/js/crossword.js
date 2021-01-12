@@ -1,11 +1,8 @@
 import Size from './size';
 import Point from './point';
+import Cell from './cell';
 
 class Crossword {
-    #CELL_WIDTH = 100;
-
-    #CELL_HEIGHT = 100;
-
     #PHYSICAL_CELL_WIDTH = 30;
     
     #PHYSICAL_CELL_HEIGHT = 30;
@@ -23,14 +20,81 @@ class Crossword {
     
     #container;
 
+    #currentAction = 'filling';
+
+    #cells = [];
+
+    #image = null;
+
     constructor(node) {
         this.#container = node;
+
+        // Баг с приветными полями
+        document.addEventListener('actionchange', ({detail}) => {
+            this.#currentAction = detail;
+        });
+    }
+
+    init() {
+        const startTimerEvent = new Event('starttimer');
+        const pauseTimerEvent = new Event('pausetimer');
+        for (let i = 0, cells = this.#cells; i < cells.length; i++) {
+            for (let j = 0; j < cells[i].length; j++) {
+                cells[i][j].init(
+                    () => {
+                        document.dispatchEvent(startTimerEvent);
+                        switch (this.#currentAction) {
+                            case 'filling':
+                                cells[i][j].fill();
+                                if (this.isSolved()) {
+                                    document.dispatchEvent(pauseTimerEvent);
+                                    alert('Поздравляем! Вы решили кроссворд!');
+                                    this.destroy();
+                                    this.#cells.forEach((row) => {
+                                        row.forEach((cell) => {
+                                            if (cell.isCrossShown()) {
+                                                cell.clear();
+                                            }
+                                        });
+                                    });
+                                }
+                                break;
+                            case 'emptying':
+                                cells[i][j].showCross();
+                                break;
+                            case 'clearing':
+                                cells[i][j].clear();
+                                break;
+                            case 'movement':
+                                break;
+                            default:
+                                break;
+                        }
+                    },
+                    (e) => {
+                        e.preventDefault();
+                        document.dispatchEvent(startTimerEvent);
+                        cells[i][j].showCross();
+                    }
+                );
+            }
+        }
+    }
+
+    destroy() {
+        for (let i = 0, cells = this.#cells; i < cells.length; i++) {
+            for (let j = 0; j < cells[i].length; j++) {
+                cells[i][j].destroy();
+            }
+        }
     }
 
     /**
      * @param {Array<Boolean>} image - массив с рисунком. Значения определены в перечислении ECell.
      */
     render(image) {
+        this.#image = image;
+
         const n = image.length;
         const m = image[0].length;
         
@@ -39,15 +103,15 @@ class Crossword {
             left: hint.left.reduce((max, row) => row.length > max ? row.length : max, 0),
             top: hint.top.reduce((max, row) => row.length > max ? row.length : max, 0)
         };
-        const topHintHeight = maxHintLength.top * this.#CELL_HEIGHT;
-        const leftHintWidth = maxHintLength.left * this.#CELL_WIDTH;
+        const topHintHeight = maxHintLength.top * Cell.HEIGHT;
+        const leftHintWidth = maxHintLength.left * Cell.WIDTH;
 
         const leftHint = this.#renderHint(hint.left, new Point(0, topHintHeight), maxHintLength.left);
         const topHint = this.#renderHint(hint.top, new Point(leftHintWidth, 0), maxHintLength.top, false);
 
         const fieldSize = new Size(
-            this.#CELL_WIDTH * m + m + 5,
-            this.#CELL_HEIGHT * n + n + 5
+            Cell.WIDTH * m + m + 5,
+            Cell.HEIGHT * n + n + 5
         );
         const field = this.#renderField(image, new Point(leftHintWidth, topHintHeight), fieldSize);
         
@@ -64,14 +128,23 @@ class Crossword {
         this.#container.appendChild(field);
     }
 
-    fill(x, y, color = Crossword.ECell.BLACK) {
-        const rows = this.#container.querySelectorAll('.crossword__field .crossword__row');
-        const cells = rows[y].querySelectorAll('.crossword__cell');
 
+    fill(x, y, color = Crossword.ECell.BLACK) {
         switch (color) {
             case Crossword.ECell.BLACK:
-                cells[x].classList.add('crossword__cell--black');
+                this.#cells[y][x].fill();
         }
+    }
+
+    isSolved() {
+        for (let i = 0; i < this.#cells.length; i++) {
+            for (let j = 0; j < this.#cells[i].length; j++) {
+                if (this.#image[i][j] !== this.#cells[i][j].value) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     #setViewBox({width, height}, {x, y}) {
@@ -138,19 +211,24 @@ class Crossword {
         for (
             let i = 0;
             i < image.length;
-            i++, y += this.#CELL_HEIGHT + (i % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT)
+            i++, y += Cell.HEIGHT + (i % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT)
         ) {
+            const cellsRow = [];
             const group = this.#renderRow();
             let x = 1;
 
             for (
                 let j = 0;
                 j < image[0].length;
-                j++, x += this.#CELL_WIDTH + (j % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT)
+                j++, x += Cell.WIDTH + (j % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT)
             ) {
-                group.appendChild(this.#renderCell(new Point(x, y)));
+                const cell = new Cell(x, y);
+                group.appendChild(cell.render());
+
+                cellsRow.push(cell);
             }
             field.appendChild(group);
+            this.#cells.push(cellsRow);
         }
 
         return field;
@@ -171,8 +249,9 @@ class Crossword {
         cell.classList.add('crossword__cell');
         cell.setAttributeNS(null, 'x', x);
         cell.setAttributeNS(null, 'y', y);
-        cell.setAttributeNS(null, 'width', this.#CELL_WIDTH);
-        cell.setAttributeNS(null, 'height', this.#CELL_HEIGHT);
+        cell.setAttributeNS(null, 'width', Cell.WIDTH);
+        cell.setAttributeNS(null, 'height', Cell.HEIGHT);
+
         return cell;
     }
 
@@ -200,8 +279,8 @@ class Crossword {
         hintsNode.setAttributeNS(null, 'y', coord.y);
 
         const background = this.#renderBackground(new Size(
-            isLeft ? length * this.#CELL_WIDTH + length + 1 : hint.length * this.#CELL_WIDTH + hint.length + 5,
-            isLeft ? hint.length * this.#CELL_HEIGHT + hint.length + 1 : length * this.#CELL_HEIGHT + length + 1
+            isLeft ? length * Cell.WIDTH + length + 1 : hint.length * Cell.WIDTH + hint.length + 5,
+            isLeft ? hint.length * Cell.HEIGHT + hint.length + 1 : length * Cell.HEIGHT + length + 1
         ));
 
         hintsNode.appendChild(background);
@@ -223,9 +302,9 @@ class Crossword {
                 const hintCell = this.#renderHintCell(new Point(x, y));
                 row.appendChild(hintCell);
                 if (isLeft) {
-                    x += this.#CELL_WIDTH + this.#SMALL_INDENT;
+                    x += Cell.WIDTH + this.#SMALL_INDENT;
                 } else {
-                    y += this.#CELL_HEIGHT + this.#SMALL_INDENT;
+                    y += Cell.HEIGHT + this.#SMALL_INDENT;
                 }
             }
 
@@ -233,16 +312,16 @@ class Crossword {
                 const hintCell = this.#renderHintCell(new Point(x, y), hints[hintsIndex]);
                 row.appendChild(hintCell);
                 if (isLeft) {
-                    x += this.#CELL_WIDTH + this.#SMALL_INDENT;
+                    x += Cell.WIDTH + this.#SMALL_INDENT;
                 } else {
-                    y += this.#CELL_HEIGHT + this.#SMALL_INDENT;
+                    y += Cell.HEIGHT + this.#SMALL_INDENT;
                 }
             }
 
             if (isLeft) {
-                y += this.#CELL_HEIGHT + ((index + 1) % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT);
+                y += Cell.HEIGHT + ((index + 1) % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT);
             } else {
-                x += this.#CELL_WIDTH + ((index + 1) % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT);
+                x += Cell.WIDTH + ((index + 1) % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT);
             }
 
             hintsNode.appendChild(row);
@@ -257,8 +336,8 @@ class Crossword {
         wrapper.appendChild(cell);
         if (text !== null) {
             wrapper.appendChild(this.#renderText(new Point(
-                coord.x + this.#CELL_WIDTH / 2,
-                coord.y + this.#CELL_HEIGHT / 2,
+                coord.x + Cell.WIDTH / 2,
+                coord.y + Cell.HEIGHT / 2,
             ), text));
         }
         return wrapper;

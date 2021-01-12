@@ -3,12 +3,28 @@ import {decodeImage} from './decode-image';
 import images, {example} from './images';
 import {runComponent} from './run-component';
 import {renderCatalog} from './catalog';
+import Timer from './timer';
 
 runComponent(document.querySelector('.j-crossword'), (element) => {
     const crossword = new Crossword(element);
     const urlParams = new URLSearchParams(window.location.search);
     const id = Number(urlParams.get('id'));
     crossword.render(decodeImage(images.find((image) => image.id === id).image));
+    crossword.init();
+});
+
+runComponent(document.querySelector('.j-actions'), (element) => {
+    element.addEventListener('change', ({target}) => {
+        const actionChangeEvent = new CustomEvent('actionchange', {
+            detail: target.value
+        });
+        document.dispatchEvent(actionChangeEvent);
+    });
+});
+
+runComponent(document.querySelector('.timer'), (element) => {
+    const timer = new Timer(element);
+    timer.init();
 });
 
 runComponent(document.querySelector('.j-catalog'), (element) => {

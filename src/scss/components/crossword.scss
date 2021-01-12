@@ -7,11 +7,19 @@
 }
 
 .crossword__cell {
-    fill: var(--white);
+    // fill: var(--white);
+
+    rect {
+        fill: var(--white);
+    }
 }
 
 .crossword__cell--black {
-    fill: var(--black);
+    // fill: var(--black);
+
+    rect {
+        fill: var(--black);
+    }
 }
 
 .crossword__text {
@@ -22,4 +30,12 @@
     .crossword__cell {
         fill: var(--gray);
     }
+}
+
+.crossword__cross {
+    display: none;
+}
+
+.crossword__cross--show {
+    display: block;
 }
