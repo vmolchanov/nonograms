@@ -54,9 +54,3 @@ $main-header__actions-mobile-height: 70px;
         @include column(11, 32);
     }
 }
-
-body {
-    @media (max-width: $tablet) {
-        padding-bottom: $main-header__actions-mobile-height;
-    }
-}
