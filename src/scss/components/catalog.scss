@@ -13,6 +13,12 @@
     &:last-child {
         border-bottom: 1px solid var(--black);
     }
+
+    @media (max-width: $mobile) {
+        @include row;
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 .catalog__item-image {
@@ -21,12 +27,34 @@
 
     img {
         width: 100%;
+        height: auto;
+    }
+
+    @media (max-width: $desktop-xs) {
+        @include column(12, 30);
+        @include eq-padding(1, 30);
+    }
+
+    @media (max-width: $mobile) {
+        @include column(28, 30);
+        @include eq-padding(1, 30);
     }
 }
 
 .catalog__item-info {
     @include column(11, 18);
     @include eq-padding(1, 18);
+
+    @media (max-width: $desktop-xs) {
+        @include column(18, 30);
+        @include eq-padding(1, 30);
+    }
+
+    @media (max-width: $mobile) {
+        width: 100%;
+        @include column(28, 30);
+        @include eq-padding(1, 30);
+    }
 }
 
 .catalog__item-name {
@@ -43,6 +71,10 @@
         &:active {
             color: var(--gray);
         }
+    }
+
+    @media (max-width: $tablet) {
+        margin-top: 10px;
     }
 }
 

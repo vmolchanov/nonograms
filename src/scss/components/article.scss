@@ -5,6 +5,10 @@
         font-size: 18px;
         text-align: justify;
     }
+
+    @media (max-width: $desktop-xs) {
+        @include eq-padding(2, 34);
+    }
 }
 
 .article__image {
@@ -13,4 +17,18 @@
     img {
         width: 400px;
     }
+
+    @media (max-width: $tablet) {
+        img {
+            width: 350px;
+        }
+    }
+
+    @media (max-width: $mobile) {
+        img {
+            width: 100%;
+        }
+    }
+
+
 }

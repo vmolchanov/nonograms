@@ -1,4 +1,4 @@
-include ./actions-item
+include ./actions-item.jade
 
 mixin header(isMainMenu, isGameControl, isActions)
     header.main-header
@@ -10,7 +10,7 @@ mixin header(isMainMenu, isGameControl, isActions)
                 //- include ../templates/score.jade
         if isActions
             ul.actions.j-actions
-                +actions-item("action-filling", "filling", "Закрашивание", true)
-                +actions-item("action-emptying", "emptying", "Пустая клетка")
-                +actions-item("action-clearing", "clearing", "Очистить клетку")
-                +actions-item("action-movement", "movement", "Перемещение")
+                +actions-item("action-filling", "filling", "Закрашивание", "actions__item--filling", true)
+                +actions-item("action-emptying", "emptying", "Пустая клетка", "actions__item--emptying")
+                +actions-item("action-clearing", "clearing", "Очистить клетку", "actions__item--clearing")
+                +actions-item("action-movement", "movement", "Перемещение", "actions__item--movement")

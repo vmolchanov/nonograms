@@ -1,22 +1,62 @@
+$main-header__actions-mobile-height: 70px;
+
 .main-header {
     @include row;
     @include eq-padding(1);
+    align-items: center;
     padding-top: 20px;
     padding-bottom: 20px;
     background-color: var(--light-blue);
+    box-shadow: 0 1px 5px 0 var(--gray);
 
     .main-menu {
         @include column(11, 34);
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        @media (max-width: $desktop-xs) {
+            @include column(34, 34);
+        }
     }
 
     .actions {
-        @include column(13, 34);
+        @include column(15, 34);
         @include eq-padding(0.5, 34);
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        @media (max-width: $desktop-xs) {
+            @include column(21, 32);
+        }
+
+        @media (max-width: $tablet) {
+            @include column(32, 32);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: $main-header__actions-mobile-height;
+            background-color: var(--light-blue);
+        }
+    }
+
+    @media (max-width: $tablet) {
+        @include eq-padding(2);
     }
 }
 
 .main-header__game-control {
     @include row;
-    @include column(10, 34);
+    @include column(8, 34);
     @include eq-padding(0.5, 34);
+
+    @media (max-width: $desktop-xs) {
+        @include column(11, 32);
+    }
+}
+
+body {
+    @media (max-width: $tablet) {
+        padding-bottom: $main-header__actions-mobile-height;
+    }
 }

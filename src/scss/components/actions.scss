@@ -1,10 +1,21 @@
 .actions {
     @include row;
-    @include resetList;
+    @include resetList; 
+    justify-content: center;
+}
+
+.actions__button {
+    display: none;
+
+    &:checked + .actions__label {
+        background-color: #6d33c2;
+    }
 }
 
 .actions__item {
     @include row;
+    padding-top: 10px;
+    padding-bottom: 10px;
     flex-direction: column;
     align-items: center;
     padding-left: 10px;
@@ -12,5 +23,53 @@
 }
 
 .actions__label {
-    font-size: 12px;
+    font-size: 0;
+    background-color: var(--white);
+    border-radius: 10px;
+
+    &::after {
+        display: block;
+        width: 40px;
+        height: 40px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        content: '';
+    }
+}
+
+.actions__item--filling + .actions__label::after {
+    background-image: url('../img/pencil.svg');
+    background-size: 35px 35px;
+}
+
+.actions__item--filling:checked + .actions__label::after {
+    background-image: url('../img/pencil-white.svg');
+}
+
+.actions__item--emptying + .actions__label::after {
+    background-image: url('../img/cross.svg');
+    background-size: 27px 27px;
+}
+
+.actions__item--emptying:checked + .actions__label::after {
+    background-image: url('../img/cross-white.svg');
+}
+
+.actions__item--clearing + .actions__label::after {
+    background-image: url('../img/eraser.svg');
+    background-size: 30px 30px;
+}
+
+.actions__item--clearing:checked + .actions__label::after {
+    background-image: url('../img/eraser-white.svg');
+}
+
+.actions__item--movement + .actions__label::after {
+    background-image: url('../img/movement.svg');
+    background-size: 35px 35px;
+    background-position: 2.5px 5.5px;
+}
+
+.actions__item--movement:checked + .actions__label::after {
+    background-image: url('../img/movement-white.svg');
 }
