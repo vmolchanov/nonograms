@@ -7,7 +7,7 @@ export const renderCatalog = () => {
         const catalogItem = renderCatalogItem({
             source: image.source,
             title: image.title,
-            href: `/crossword.html?id=${image.id}`,
+            href: `crossword.html?id=${image.id}`,
             infos: [
                 {
                     key: 'Размер:',
