@@ -27,15 +27,20 @@ const validateTitle = (title) => {
     }
 };
 
-const validateImage = (image) => {
-    if (!Array.isArray(image) && image.every((row) => Array.isArray(row))) {
-        return new TypeError('Переменная image должна быть двумерным массивом.');
+const validateImage = (image, title) => {
+    if (!Array.isArray(image) || !image.every((row) => Array.isArray(row))) {
+        throw new TypeError('Переменная image должна быть двумерным массивом.');
     }
 
     let rowIndex;
     let columnIndex;
+
+    // if (!image.every((row) => Array.isArray(row))) {
+    //     throw new TypeError('Не массив');
+    // }
+
     if (!image.every((row, i) => {
-            return row instanceof Array && row.every((value) => {
+            return row.every((value) => {
                 const isValid = /^\d+\/\d+$/.test(value);
                 if (!isValid) {
                     rowIndex = i;
@@ -44,6 +49,7 @@ const validateImage = (image) => {
                 return isValid;
             })
     })) {
+        console.log(rowIndex, columnIndex);
         throw new ImageEncryptionError('image', title, rowIndex, columnIndex);
     }
 };
@@ -56,7 +62,7 @@ const imageSchema = ({id, image, level, title, size, source}) => {
     validateId(id);
     validateLevel(level);
     validateTitle(title);
-    validateImage(image);
+    validateImage(image, title);
     return {
         id,
         image,
