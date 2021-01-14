@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="css/bundle.min.css" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&amp;display=swap" rel="stylesheet" />
+        <title>Кроссворд</title>
+    </head>
+    <body>
+        <style>
+            @media (max-width: 768px)
+            {
+                body
+                {
+                    padding-bottom: 70px;
+                }
+            }
+        </style>
+        <script>
+            window.addEventListener('beforeunload', function(e)
+            {
+                e.returnValue = true;
+            })
+        </script>
+        <header class="main-header">
+            <nav class="main-menu">
+                <div class="main-menu__burger">
+                    <label for="burger">☰</label>
+                    <input id="burger" type="checkbox" />
+                </div>
+                <ul class="main-menu__list">
+                    <li class="main-menu__item"><a href="/" class="main-menu__link">Главная</a></li>
+                    <li class="main-menu__item"><a href="/catalog.html" class="main-menu__link">Каталог</a></li>
+                    <li class="main-menu__item"><a href="/learn.html" class="main-menu__link">Как решать</a></li>
+                </ul>
+            </nav>
+            <div class="main-header__game-control">
+                <article class="timer pentagon j-timer"><span class="pentagon__icon timer__icon"></span>
+                    <div class="pentagon__value timer__value">0</div>
+                </article>
+            </div>
+            <ul class="actions j-actions">
+                <li class="actions__item">
+                    <input id="action-filling" type="radio" name="action" value="filling" checked="checked" class="actions__button actions__item--filling" />
+                    <label for="action-filling" title="Закрашивание" class="actions__label">Закрашивание</label>
+                </li>
+                <li class="actions__item">
+                    <input id="action-emptying" type="radio" name="action" value="emptying" class="actions__button actions__item--emptying" />
+                    <label for="action-emptying" title="Пустая клетка" class="actions__label">Пустая клетка</label>
+                </li>
+                <li class="actions__item">
+                    <input id="action-clearing" type="radio" name="action" value="clearing" class="actions__button actions__item--clearing" />
+                    <label for="action-clearing" title="Очистить клетку" class="actions__label">Очистить клетку</label>
+                </li>
+                <li class="actions__item">
+                    <input id="action-movement" type="radio" name="action" value="movement" class="actions__button actions__item--movement" />
+                    <label for="action-movement" title="Перемещение" class="actions__label">Перемещение</label>
+                </li>
+            </ul>
+        </header>
+        <main class="main-content">
+            <div class="crossword-wrapper">
+                <svg viewBox="0 0 1017 1017" width="500" height="500" class="field__crossword crossword j-crossword"></svg>
+            </div>
+        </main>
+        <script src="js/bundle.min.js"></script>
+    </body>
+</html>

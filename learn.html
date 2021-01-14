@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="css/bundle.min.css" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&amp;display=swap" rel="stylesheet" />
+        <title>Как решать японский кроссворд</title>
+    </head>
+    <body>
+        <header class="main-header">
+            <nav class="main-menu">
+                <div class="main-menu__burger">
+                    <label for="burger">☰</label>
+                    <input id="burger" type="checkbox" />
+                </div>
+                <ul class="main-menu__list">
+                    <li class="main-menu__item"><a href="/" class="main-menu__link">Главная</a></li>
+                    <li class="main-menu__item"><a href="/catalog.html" class="main-menu__link">Каталог</a></li>
+                    <li class="main-menu__item"><a href="/learn.html" class="main-menu__link">Как решать</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="main-content">
+            <article class="article">
+                <p> Для решения японского кроссворда необходимо в соответствии с числами, которые представлены слева в строках и сверху в столбцах, разгадать зашифрованную картинку. Числа означают, сколько слитно закрашенных клеток находится в данной строке или столбце. Эти группы разделены как минимум одной пустой клеткой. </p>
+                <p> Например, стоит всего одна цифра 9 в ряду, значит, в этом ряду должно быть 9 подряд закрашенных черных клеток, а если стоят цифры 2, 4, 5, то это означает, что в ряду должны быть закрашены две, четыре и пять клеток, но соответственно не подряд, а с разрывами между ними на одну или более клеток. И вот эта величина разрывов является самым сложным для отгадывания. </p>
+                <p> Ну как, стало понятнее? Нет? Тогда давай попробуем вместе решить простой пример. Готов? Поехали! </p>
+                <div class="crossword-wrapper">
+                    <svg viewBox="0 0 1017 1017" width="500" height="500" class="crossword j-crossword-example"></svg>
+                </div>
+                <ol>
+                    <li>
+                        <p> Для начала найдем самые большие числа. В нашем случае это 8 в крайнем столбце справа. Длина столбца также 8, и, следовательно, можно смело закрашивать его весь. </p>
+                        <div class="crossword-wrapper">
+                            <svg viewBox="0 0 1017 1017" width="500" height="500" data-step="1" class="crossword j-crossword-example"></svg>
+                        </div>
+                    </li>
+                    <li>
+                        <p> Если возле ряда стоит одно число, которое больше, чем половина длины этого ряда, то, как ни располагайте эту группу, все равно несколько клеток в середине будут закрашены. У нас это число 5 во втором столбце (слева) и пятой строке (сверху). Начнем со столбца. Две клетки в середине второго столбца можно смело закрасить. </p>
+                        <div class="crossword-wrapper">
+                            <svg viewBox="0 0 1017 1017" width="500" height="500" data-step="2" class="crossword j-crossword-example"></svg>
+                        </div>
+                    </li>
+                    <li>
+                        <p> Положние группы в пятой строке (сверху) теперь известно точно, т. к. отрезок от крайнего правого (закрашенного) столбца до второго столбца (слева) и составляет как раз 5 клеток. Сразу же закрасим первую строку (сверху), т. к. группа из 3-х клеток должна пересекаться с закрашенной клеткой из крайнего правого (закрашенного) столбца. </p>
+                        <div class="crossword-wrapper">
+                            <svg viewBox="0 0 1017 1017" width="500" height="500" data-step="3" class="crossword j-crossword-example"></svg>
+                        </div>
+                    </li>
+                    <li>
+                        <p> Теперь займемся третьим (слева) столбцом. Одна закрашенная клетка уже известна. Вторая группа из двух клеток будет расположена соответственно выше первой группы (одна клетка). Положение ее определит пересечение со второй и третьей строкой (сверху). </p>
+                        <div class="crossword-wrapper">
+                            <svg viewBox="0 0 1017 1017" width="500" height="500" data-step="4" class="crossword j-crossword-example"></svg>
+                        </div>
+                    </li>
+                    <li>
+                        <p> В самой нижней строке расположены две группы длиной две и одна клетка. Положение группы из одной клетки уже известно, благодаря все тому же крайнему правому столбцу, а вот группа из двух клеток начинается сразу с первого столбца. После этого можно закрашивать и последний столбец из пяти клеток. </p>
+                        <div class="crossword-wrapper">
+                            <svg viewBox="0 0 1017 1017" width="500" height="500" data-step="5" class="crossword j-crossword-example"></svg>
+                        </div>
+                    </li>
+                </ol>
+                <p> Ну вот и все! Надеюсь, вы узнали букву А. Поскорее примени полученные знания на практике. Переходи в <a href="/catalog.html">каталог</a> и решай! Удачи! </p>
+            </article>
+        </main>
+        <script src="js/bundle.min.js"></script>
+    </body>
+</html>
