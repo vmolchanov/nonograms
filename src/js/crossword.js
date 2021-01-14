@@ -1,10 +1,11 @@
 import Size from './size';
 import Point from './point';
-import Cell from './cell';
+import FieldCell from './field-cell';
+import HintCell from './hint-cell';
 
 class Crossword {
     #PHYSICAL_CELL_WIDTH = 30;
-    
+
     #PHYSICAL_CELL_HEIGHT = 30;
 
     #SVG_NAMESPACE_URI = 'http://www.w3.org/2000/svg';
@@ -17,7 +18,7 @@ class Crossword {
         EMPTY: 0,
         BLACK: 1
     };
-    
+
     #container;
 
     #currentAction = 'filling';
@@ -30,7 +31,7 @@ class Crossword {
         this.#container = node;
 
         // Баг с приветными полями
-        document.addEventListener('actionchange', ({detail}) => {
+        document.addEventListener('actionchange', ({ detail }) => {
             this.#currentAction = detail;
         });
     }
@@ -97,24 +98,24 @@ class Crossword {
 
         const n = image.length;
         const m = image[0].length;
-        
+
         const hint = this.#getHint(image);
         const maxHintLength = {
             left: hint.left.reduce((max, row) => row.length > max ? row.length : max, 0),
             top: hint.top.reduce((max, row) => row.length > max ? row.length : max, 0)
         };
-        const topHintHeight = maxHintLength.top * Cell.HEIGHT;
-        const leftHintWidth = maxHintLength.left * Cell.WIDTH;
+        const topHintHeight = maxHintLength.top * FieldCell.HEIGHT;
+        const leftHintWidth = maxHintLength.left * FieldCell.WIDTH;
 
         const leftHint = this.#renderHint(hint.left, new Point(0, topHintHeight), maxHintLength.left);
         const topHint = this.#renderHint(hint.top, new Point(leftHintWidth, 0), maxHintLength.top, false);
 
         const fieldSize = new Size(
-            Cell.WIDTH * m + m + 5,
-            Cell.HEIGHT * n + n + 5
+            FieldCell.WIDTH * m + m + 5,
+            FieldCell.HEIGHT * n + n + 5
         );
         const field = this.#renderField(image, new Point(leftHintWidth, topHintHeight), fieldSize);
-        
+
         const physicalSize = new Size(
             this.#PHYSICAL_CELL_WIDTH * (m + maxHintLength.left),
             this.#PHYSICAL_CELL_HEIGHT * (n + maxHintLength.top)
@@ -147,11 +148,11 @@ class Crossword {
         return true;
     }
 
-    #setViewBox({width, height}, {x, y}) {
+    #setViewBox({ width, height }, { x, y }) {
         this.#container.setAttribute('viewBox', `${width} ${height} ${x} ${y}`);
     }
 
-    #setPhysicalSize({width, height}) {
+    #setPhysicalSize({ width, height }) {
         this.#container.setAttribute('width', width);
         this.#container.setAttribute('height', height);
     }
@@ -211,7 +212,7 @@ class Crossword {
         for (
             let i = 0;
             i < image.length;
-            i++, y += Cell.HEIGHT + (i % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT)
+            i++, y += FieldCell.HEIGHT + (i % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT)
         ) {
             const cellsRow = [];
             const group = this.#renderRow();
@@ -220,9 +221,9 @@ class Crossword {
             for (
                 let j = 0;
                 j < image[0].length;
-                j++, x += Cell.WIDTH + (j % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT)
+                j++, x += FieldCell.WIDTH + (j % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT)
             ) {
-                const cell = new Cell(x, y);
+                const cell = new FieldCell(x, y);
                 group.appendChild(cell.render());
 
                 cellsRow.push(cell);
@@ -234,7 +235,7 @@ class Crossword {
         return field;
     }
 
-    #renderBackground({width, height}) {
+    #renderBackground({ width, height }) {
         const background = document.createElementNS(this.#SVG_NAMESPACE_URI, 'rect');
         background.classList.add('crossword__background');
         background.setAttributeNS(null, 'x', 0);
@@ -244,32 +245,10 @@ class Crossword {
         return background;
     }
 
-    #renderCell({x, y}) {
-        const cell = document.createElementNS(this.#SVG_NAMESPACE_URI, 'rect');
-        cell.classList.add('crossword__cell');
-        cell.setAttributeNS(null, 'x', x);
-        cell.setAttributeNS(null, 'y', y);
-        cell.setAttributeNS(null, 'width', Cell.WIDTH);
-        cell.setAttributeNS(null, 'height', Cell.HEIGHT);
-
-        return cell;
-    }
-
     #renderRow() {
         const group = document.createElementNS(this.#SVG_NAMESPACE_URI, 'g');
         group.classList.add('crossword__row');
         return group;
-    }
-
-    #renderText({x, y}, text) {
-        const textNode = document.createElementNS(this.#SVG_NAMESPACE_URI, 'text');
-        textNode.classList.add('crossword__text');
-        textNode.setAttributeNS(null, 'x', x);
-        textNode.setAttributeNS(null, 'y', y);
-        textNode.setAttributeNS(null, 'dominant-baseline', 'middle');
-        textNode.setAttributeNS(null, 'text-anchor', 'middle');
-        textNode.textContent = text;
-        return textNode;
     }
 
     #renderHint(hint, coord, length, isLeft = true) {
@@ -279,8 +258,8 @@ class Crossword {
         hintsNode.setAttributeNS(null, 'y', coord.y);
 
         const background = this.#renderBackground(new Size(
-            isLeft ? length * Cell.WIDTH + length + 1 : hint.length * Cell.WIDTH + hint.length + 5,
-            isLeft ? hint.length * Cell.HEIGHT + hint.length + 1 : length * Cell.HEIGHT + length + 1
+            isLeft ? length * FieldCell.WIDTH + length + 1 : hint.length * FieldCell.WIDTH + hint.length + 5,
+            isLeft ? hint.length * FieldCell.HEIGHT + hint.length + 1 : length * FieldCell.HEIGHT + length + 1
         ));
 
         hintsNode.appendChild(background);
@@ -299,48 +278,39 @@ class Crossword {
 
             let i;
             for (i = 0; i < length - hints.length; i++) {
-                const hintCell = this.#renderHintCell(new Point(x, y));
-                row.appendChild(hintCell);
+                const hintCell = new HintCell(x, y);
+                row.appendChild(hintCell.render());
                 if (isLeft) {
-                    x += Cell.WIDTH + this.#SMALL_INDENT;
+                    x += FieldCell.WIDTH + this.#SMALL_INDENT;
                 } else {
-                    y += Cell.HEIGHT + this.#SMALL_INDENT;
+                    y += FieldCell.HEIGHT + this.#SMALL_INDENT;
                 }
             }
 
             for (let j = i, hintsIndex = j - i; j - i < hints.length; j++, hintsIndex = j - i) {
-                const hintCell = this.#renderHintCell(new Point(x, y), hints[hintsIndex]);
-                row.appendChild(hintCell);
+                const hintCell = new HintCell(x, y, hints[hintsIndex]);
+                hintCell.init(() => {
+                    console.log('here');
+                    hintCell.check();
+                })
+                row.appendChild(hintCell.render());
                 if (isLeft) {
-                    x += Cell.WIDTH + this.#SMALL_INDENT;
+                    x += FieldCell.WIDTH + this.#SMALL_INDENT;
                 } else {
-                    y += Cell.HEIGHT + this.#SMALL_INDENT;
+                    y += FieldCell.HEIGHT + this.#SMALL_INDENT;
                 }
             }
 
             if (isLeft) {
-                y += Cell.HEIGHT + ((index + 1) % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT);
+                y += FieldCell.HEIGHT + ((index + 1) % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT);
             } else {
-                x += Cell.WIDTH + ((index + 1) % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT);
+                x += FieldCell.WIDTH + ((index + 1) % 5 === 0 ? this.#BIG_INDENT : this.#SMALL_INDENT);
             }
 
             hintsNode.appendChild(row);
         });
 
         return hintsNode;
-    }
-
-    #renderHintCell(coord, text = null) {
-        const wrapper = document.createElementNS(this.#SVG_NAMESPACE_URI, 'svg');
-        const cell = this.#renderCell(coord);
-        wrapper.appendChild(cell);
-        if (text !== null) {
-            wrapper.appendChild(this.#renderText(new Point(
-                coord.x + Cell.WIDTH / 2,
-                coord.y + Cell.HEIGHT / 2,
-            ), text));
-        }
-        return wrapper;
     }
 }
 

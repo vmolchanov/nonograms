@@ -1,4 +1,3 @@
-/**  */
 class ImageEncryptionError extends Error {
     name = 'ImageEncryptionError';
 
@@ -10,3 +9,5 @@ class ImageEncryptionError extends Error {
         );
     }
 }
+
+export default ImageEncryptionError;

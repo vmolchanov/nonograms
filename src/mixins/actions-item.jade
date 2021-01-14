@@ -8,4 +8,4 @@ mixin actions-item(id, value, text, className, isChecked=false)
             value=value,
             checked=isChecked
         )
-        label(class="actions__label" for=id)= text
+        label(class="actions__label", for=id, title=text)= text

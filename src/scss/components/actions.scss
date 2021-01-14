@@ -27,6 +27,10 @@
     background-color: var(--white);
     border-radius: 10px;
 
+    &:hover {
+        cursor: pointer;
+    }
+
     &::after {
         display: block;
         width: 40px;

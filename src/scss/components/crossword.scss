@@ -1,5 +1,7 @@
 .crossword {
     border: 2px solid var(--black);
+
+    user-select: none;
 }
 
 .crossword__background {
@@ -7,16 +9,16 @@
 }
 
 .crossword__cell {
-    // fill: var(--white);
-
     rect {
         fill: var(--white);
+    }
+
+    &:hover {
+        cursor: pointer;
     }
 }
 
 .crossword__cell--black {
-    // fill: var(--black);
-
     rect {
         fill: var(--black);
     }
@@ -26,9 +28,15 @@
     font-size: 48px;
 }
 
+.crossword__text--checked {
+    text-decoration: line-through;
+}
+
 .crossword__hint {
     .crossword__cell {
-        fill: var(--gray);
+        rect {
+            fill: var(--gray);
+        }
     }
 }
 
