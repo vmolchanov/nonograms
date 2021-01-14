@@ -1,5 +1,6 @@
 import EmptyStringError from './errors/empty-string-error';
 import ImageEncryptionError from './errors/image-encryption-error';
+import {InvalidFormat} from './errors/invalid-format';
 
 const validateId = (id) => {
     if (typeof id !== 'number') {
@@ -35,10 +36,6 @@ const validateImage = (image, title) => {
     let rowIndex;
     let columnIndex;
 
-    // if (!image.every((row) => Array.isArray(row))) {
-    //     throw new TypeError('Не массив');
-    // }
-
     if (!image.every((row, i) => {
             return row.every((value) => {
                 const isValid = /^\d+\/\d+$/.test(value);
@@ -55,7 +52,10 @@ const validateImage = (image, title) => {
 };
 
 const validateSize = (size) => {
-    
+    const isValid = /^\d+x\d+$/.test(size);
+    if (!isValid) {
+        throw new InvalidSize('size', '{width}x{height}');
+    }
 };
 
 const imageSchema = ({id, image, level, title, size, source}) => {
@@ -63,6 +63,7 @@ const imageSchema = ({id, image, level, title, size, source}) => {
     validateLevel(level);
     validateTitle(title);
     validateImage(image, title);
+    validateSize(size);
     return {
         id,
         image,
