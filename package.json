@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Игра \"Японские кроссворды\"",
     "author": "Vladislav Molchanov <Molchanov96@yandex.ru>",
-    "homepage": "https://github.com/vmolchanov/nonograms",
+    "homepage": "https://vmolchanov.github.io/nonograms",
     "license": "ISC",
     "scripts": {
         "build": "gulp build",
