@@ -2,6 +2,7 @@
     @include eq-padding(8, 34);
 
     p {
+        color: var(--black);
         font-size: 18px;
         text-align: justify;
     }

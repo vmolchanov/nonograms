@@ -5,7 +5,7 @@
 }
 
 .crossword__background {
-    fill: var(--black);
+    fill: var(--black-cell);
 }
 
 .crossword__cell {
@@ -20,7 +20,7 @@
 
 .crossword__cell--black {
     rect {
-        fill: var(--black);
+        fill: var(--black-cell);
     }
 }
 
