@@ -1,0 +1,26 @@
+.main-menu__list {
+    @include row;
+    @include resetList;
+}
+
+.main-menu__item {
+    padding: 10px;
+}
+
+.main-menu__link {
+    font-size: 16px;
+    text-decoration: none;
+    color: var(--black);
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &:active {
+        color: var(--gray);
+    }
+}
+
+.main-menu__burger {
+    display: none;
+}

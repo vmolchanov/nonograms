@@ -1,0 +1,12 @@
+template#catalog-item
+    li.catalog__item
+        div.catalog__item-image
+            img(src="{{source}}", width="220", height="140", alt="{{title}}")
+        div.catalog__item-info
+            p.catalog__item-name
+                a(href="{{href}}") {{title}}
+            ul.catalog__info-list
+                {{.catalog__info-item}}
+    li.catalog__info-item
+        span {{key}}
+        span {{value}}

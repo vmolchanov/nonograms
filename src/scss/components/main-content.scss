@@ -1,0 +1,4 @@
+.main-content {
+    @include eq-padding(1);
+    width: 100%;
+}

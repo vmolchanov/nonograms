@@ -1,0 +1,25 @@
+extends ./templates/layout.jade
+include ./mixins/header.jade
+
+block title
+    title Кроссворд
+
+block content
+
+    style.
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 70px;
+            }
+        }
+
+    script.
+        window.addEventListener('beforeunload', function(e) {
+            e.returnValue = true;
+        })
+
+    +header(true, true, true)
+
+    main.main-content
+        div.crossword-wrapper
+            svg(class="field__crossword crossword j-crossword", viewBox="0 0 1017 1017", width="500" height="500")

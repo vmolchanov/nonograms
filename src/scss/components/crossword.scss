@@ -1,0 +1,49 @@
+.crossword {
+    border: 2px solid var(--black);
+
+    user-select: none;
+}
+
+.crossword__background {
+    fill: var(--black-cell);
+}
+
+.crossword__cell {
+    rect {
+        fill: var(--white);
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.crossword__cell--black {
+    rect {
+        fill: var(--black-cell);
+    }
+}
+
+.crossword__text {
+    font-size: 48px;
+}
+
+.crossword__text--checked {
+    text-decoration: line-through;
+}
+
+.crossword__hint {
+    .crossword__cell {
+        rect {
+            fill: var(--gray);
+        }
+    }
+}
+
+.crossword__cross {
+    display: none;
+}
+
+.crossword__cross--show {
+    display: block;
+}

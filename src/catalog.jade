@@ -1,0 +1,16 @@
+extends ./templates/layout.jade
+include ./mixins/header.jade
+
+block title
+    title Каталог
+
+block content
+    +header(true, false, false)
+
+    main.main-content
+        div.article
+            h1.page-title Каталог японских кроссвордов
+            
+            ul.catalog.j-catalog
+
+    include ./templates/catalog-item.jade

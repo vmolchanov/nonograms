@@ -1,0 +1,16 @@
+include ./actions-item.jade
+
+mixin header(isMainMenu, isGameControl, isActions)
+    header.main-header
+        if isMainMenu
+            include ../templates/main-menu.jade
+        if isGameControl
+            div.main-header__game-control
+                include ../templates/timer.jade
+                //- include ../templates/score.jade
+        if isActions
+            ul.actions.j-actions
+                +actions-item("action-filling", "filling", "Закрашивание", "actions__item--filling", true)
+                +actions-item("action-emptying", "emptying", "Пустая клетка", "actions__item--emptying")
+                +actions-item("action-clearing", "clearing", "Очистить клетку", "actions__item--clearing")
+                +actions-item("action-movement", "movement", "Перемещение", "actions__item--movement")

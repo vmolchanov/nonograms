@@ -1,0 +1,41 @@
+$grid-size: 36;
+
+@function percentageFromColumn($col, $of) {
+    @return percentage($col / $of);
+}
+
+@mixin ml($n, $of: $grid-size) {
+    margin-left: percentageFromColumn($n, $of);
+}
+
+@mixin mr($n, $of: $grid-size) {
+    margin-right: percentageFromColumn($n, $of);
+}
+
+@mixin eq-margin($n, $of: $grid-size) {
+    @include ml($n, $of);
+    @include mr($n, $of);
+}
+
+@mixin pl($n, $of: $grid-size) {
+    padding-left: percentageFromColumn($n, $of);
+}
+
+@mixin pr($n, $of: $grid-size) {
+    padding-right: percentageFromColumn($n, $of);
+}
+
+@mixin eq-padding($n, $of: $grid-size) {
+    @include pl($n, $of);
+    @include pr($n, $of);
+}
+
+@mixin row() {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@mixin column($n, $of: $grid-size) {
+    flex-basis: percentageFromColumn($n, $of);
+    max-width: percentageFromColumn($n, $of);
+}
